@@ -6,25 +6,27 @@
 <title>Thundermans Sudoku</title>
 <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Exo+2:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-  :root {
+  :root{
     --purple:#7B2FBE;--purple-dark:#3A0E6E;--purple-mid:#5A1A9E;--purple-light:#C084FC;
     --yellow:#FACC15;--yellow-light:#FEF08A;
     --red:#E8152A;--red-dark:#9B0E1C;--red-light:#FF6B7A;
     --green:#22C55E;--green-dark:#15803D;--green-light:#86EFAC;
-    --blue:#3B82F6;--blue-light:#93C5FD;
-    --bg:#140228;--bg2:#220944;--bg3:#2E0F5C;--cell-bg:#1E0840;--neutral:#A78BFA;
+    --blue:#3B82F6;
+    --bg:#140228;--bg2:#220944;--cell-bg:#1E0840;--neutral:#A78BFA;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'Exo 2',sans-serif;background:var(--bg);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;position:relative}
   body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(1px 1px at 8% 12%,rgba(250,204,21,.7) 0%,transparent 100%),radial-gradient(1px 1px at 22% 44%,rgba(250,204,21,.4) 0%,transparent 100%),radial-gradient(2px 2px at 58% 9%,rgba(255,255,255,.5) 0%,transparent 100%),radial-gradient(1px 1px at 74% 29%,rgba(232,21,42,.5) 0%,transparent 100%),radial-gradient(1px 1px at 87% 54%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(2px 2px at 39% 74%,rgba(250,204,21,.3) 0%,transparent 100%),radial-gradient(1px 1px at 4% 79%,rgba(232,21,42,.3) 0%,transparent 100%),radial-gradient(1px 1px at 91% 84%,rgba(250,204,21,.4) 0%,transparent 100%),radial-gradient(1px 1px at 50% 91%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 33% 22%,rgba(250,204,21,.3) 0%,transparent 100%);pointer-events:none;z-index:0}
   .ldeco{position:fixed;font-size:90px;opacity:.055;pointer-events:none;z-index:0;color:var(--red);filter:drop-shadow(0 0 4px var(--red))}
   .ldeco.l1{top:3%;left:1%;transform:rotate(-25deg)}.ldeco.l2{top:28%;right:1%;transform:rotate(18deg)}.ldeco.l3{bottom:18%;left:4%;transform:rotate(-12deg)}.ldeco.l4{bottom:4%;right:4%;transform:rotate(22deg)}
+  /* header */
   .header{position:relative;z-index:1;text-align:center;padding:22px 16px 10px;width:100%}
   .logo-wrap{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:3px}
   .bolt{display:inline-block;font-size:2.1rem;color:var(--yellow);filter:drop-shadow(0 0 6px var(--yellow));animation:bolt-pulse 1.6s ease-in-out infinite}
   @keyframes bolt-pulse{0%,100%{filter:drop-shadow(0 0 5px var(--yellow)) drop-shadow(0 0 0px var(--red));transform:scale(1)}50%{filter:drop-shadow(0 0 14px var(--yellow)) drop-shadow(0 0 8px var(--red));transform:scale(1.18)}}
   h1{font-family:'Russo One',sans-serif;font-size:clamp(1.9rem,6.5vw,3.4rem);color:var(--yellow);letter-spacing:4px;text-shadow:2px 2px 0 var(--red-dark),4px 4px 0 var(--purple-dark),0 0 22px rgba(250,204,21,.45),0 0 40px rgba(232,21,42,.2);line-height:1}
   .subtitle{font-family:'Exo 2',sans-serif;font-size:.75rem;font-weight:800;color:var(--red-light);letter-spacing:3px;text-transform:uppercase;margin-top:3px}
+  /* controls */
   .controls{position:relative;z-index:1;display:flex;align-items:center;gap:8px;margin:10px 0 12px;flex-wrap:wrap;justify-content:center;padding:0 14px}
   .btn{font-family:'Russo One',sans-serif;font-size:.85rem;letter-spacing:1px;padding:8px 15px;border:none;border-radius:28px;cursor:pointer;transition:transform .15s,box-shadow .15s}
   .btn:hover{transform:translateY(-2px)}.btn:active{transform:scale(.94)}
@@ -32,28 +34,34 @@
   .btn-hint{background:linear-gradient(135deg,var(--blue),#2563EB);color:#fff;box-shadow:0 4px 14px rgba(59,130,246,.4)}
   .btn-clear{background:linear-gradient(135deg,var(--red),var(--red-dark));color:#fff;box-shadow:0 4px 14px rgba(232,21,42,.45)}
   .btn-rules{background:linear-gradient(135deg,var(--purple-mid),var(--purple-dark));color:var(--yellow-light);box-shadow:0 4px 14px rgba(123,47,190,.4);border:1px solid var(--purple-light)}
+  .btn-lang{background:linear-gradient(135deg,#1e3a5f,#0f2340);color:var(--yellow-light);box-shadow:0 4px 14px rgba(59,130,246,.3);border:1px solid var(--blue);font-size:.82rem;padding:8px 12px;letter-spacing:1.5px}
   .difficulty-wrap{display:flex;align-items:center;gap:6px}
   .difficulty-wrap label{font-family:'Exo 2',sans-serif;font-weight:800;color:var(--purple-light);font-size:.8rem}
   select{font-family:'Exo 2',sans-serif;font-weight:700;background:var(--bg2);color:var(--yellow);border:2px solid var(--purple);border-radius:18px;padding:6px 12px;cursor:pointer;font-size:.8rem;outline:none}
+  /* stats */
   .stats{position:relative;z-index:1;display:flex;gap:12px;margin-bottom:10px;justify-content:center;flex-wrap:wrap}
   .stat-box{background:var(--bg2);border:2px solid var(--purple-mid);border-radius:14px;padding:6px 14px;text-align:center;min-width:72px;transition:opacity .3s}
   .stat-box.hidden{opacity:0;pointer-events:none}
   .stat-label{font-family:'Exo 2',sans-serif;font-size:.58rem;color:var(--purple-light);text-transform:uppercase;letter-spacing:1px;font-weight:800}
   .stat-value{font-family:'Russo One',sans-serif;font-size:1.45rem;color:var(--yellow);letter-spacing:1px;line-height:1.15}
+  /* mode badge */
   .mode-badge{display:none;position:relative;z-index:1;border-radius:20px;padding:5px 16px;font-family:'Russo One',sans-serif;font-size:.78rem;letter-spacing:1px;margin-bottom:8px;box-shadow:0 0 12px rgba(0,0,0,.3)}
   .mode-badge.show{display:block}
   .mode-badge.anfaenger{background:linear-gradient(135deg,var(--green-dark),#166534);border:2px solid var(--green);color:var(--green-light)}
   .mode-badge.einstein{background:linear-gradient(135deg,#1a1a2e,#16213e);border:2px solid var(--red-light);color:var(--red-light)}
+  /* legend */
   .legend{position:relative;z-index:1;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:6px;min-height:22px}
   .legend-item{display:flex;align-items:center;gap:5px;font-family:'Exo 2',sans-serif;font-size:.72rem;font-weight:700;color:var(--purple-light);opacity:0;transition:opacity .3s}
   .legend-item.show{opacity:1}
   .legend-dot{width:12px;height:12px;border-radius:3px}
   .ld-given{background:var(--yellow)}.ld-correct{background:var(--green)}.ld-wrong{background:var(--red)}
+  /* game area */
   .game-area{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:14px;padding:0 14px 10px;width:100%}
   .board-wrap{position:relative}
   .board-glow{position:absolute;inset:-5px;border-radius:18px;background:linear-gradient(135deg,var(--red),var(--purple),var(--yellow));z-index:-1;filter:blur(12px);opacity:.45;animation:glow-cycle 4s ease-in-out infinite}
   @keyframes glow-cycle{0%{opacity:.35;filter:blur(10px)}50%{opacity:.65;filter:blur(14px)}100%{opacity:.35;filter:blur(10px)}}
   .board{display:grid;grid-template-columns:repeat(9,1fr);grid-template-rows:repeat(9,1fr);background:var(--purple-dark);border:3px solid var(--red);border-radius:13px;overflow:hidden;width:min(93vw,448px);height:min(93vw,448px)}
+  /* cells */
   .cell{background:var(--cell-bg);display:flex;align-items:center;justify-content:center;font-family:'Russo One',sans-serif;font-size:clamp(12px,3.7vw,20px);cursor:pointer;color:var(--purple-light);user-select:none;-webkit-tap-highlight-color:transparent;transition:background .1s;border-right:1px solid rgba(90,26,158,.4);border-bottom:1px solid rgba(90,26,158,.4)}
   .cell.box-right{border-right:2.5px solid var(--red)}.cell.box-bottom{border-bottom:2.5px solid var(--red)}.cell.no-right{border-right:none}.cell.no-bottom{border-bottom:none}
   .cell.given{color:var(--yellow);font-size:clamp(14px,4.1vw,22px);cursor:default;text-shadow:0 0 6px rgba(250,204,21,.35)}
@@ -66,17 +74,21 @@
   .cell.flash-correct{animation:flash-green .35s ease}.cell.flash-wrong{animation:flash-red .35s ease}
   @keyframes flash-green{0%{background:rgba(34,197,94,.5);transform:scale(1.12)}100%{background:transparent;transform:scale(1)}}
   @keyframes flash-red{0%,50%{background:rgba(232,21,42,.5);transform:translateX(-3px)}25%{transform:translateX(3px)}100%{background:transparent;transform:translateX(0)}}
+  /* numpad */
   .numpad{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;width:min(93vw,448px)}
   .numpad-btn{font-family:'Russo One',sans-serif;font-size:1.3rem;padding:11px 0;letter-spacing:1px;border:2px solid var(--purple-mid);border-radius:12px;background:var(--bg2);color:var(--yellow);cursor:pointer;transition:background .14s,transform .12s;text-align:center;box-shadow:0 2px 7px rgba(0,0,0,.35)}
   .numpad-btn:hover{background:var(--purple-mid);transform:translateY(-2px)}.numpad-btn:active{transform:scale(.91)}
   .numpad-btn.erase{color:var(--red-light);border-color:var(--red);font-size:1.05rem}.numpad-btn.erase:hover{background:rgba(232,21,42,.18)}
+  /* overlays */
   .overlay{position:fixed;inset:0;background:rgba(8,1,20,.88);display:flex;align-items:center;justify-content:center;z-index:100;opacity:0;pointer-events:none;transition:opacity .35s;backdrop-filter:blur(5px)}
   .overlay.show{opacity:1;pointer-events:all}
-  .msg-box{background:linear-gradient(145deg,var(--bg2),var(--purple-dark));border:3px solid var(--red);border-radius:22px;padding:36px 38px;text-align:center;max-width:310px;box-shadow:0 0 40px rgba(232,21,42,.3),0 0 70px rgba(123,47,190,.3);animation:slide-in .35s ease}
   @keyframes slide-in{from{transform:scale(.68) translateY(28px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+  /* message box */
+  .msg-box{background:linear-gradient(145deg,var(--bg2),var(--purple-dark));border:3px solid var(--red);border-radius:22px;padding:36px 38px;text-align:center;max-width:310px;box-shadow:0 0 40px rgba(232,21,42,.3),0 0 70px rgba(123,47,190,.3);animation:slide-in .35s ease}
   .msg-icon{font-size:3.6rem;margin-bottom:9px}
   .msg-title{font-family:'Russo One',sans-serif;font-size:2.2rem;color:var(--yellow);letter-spacing:3px;text-shadow:2px 2px 0 var(--red-dark),0 0 16px rgba(250,204,21,.4);margin-bottom:7px}
   .msg-sub{color:var(--purple-light);font-weight:600;margin-bottom:20px;font-size:.95rem}
+  /* rules box */
   .rules-box{background:linear-gradient(145deg,var(--bg2),var(--purple-dark));border:3px solid var(--purple-light);border-radius:22px;padding:28px 30px;max-width:380px;width:92%;box-shadow:0 0 40px rgba(123,47,190,.4);animation:slide-in .35s ease;max-height:90vh;overflow-y:auto}
   .rules-box h2{font-family:'Russo One',sans-serif;font-size:1.45rem;color:var(--yellow);letter-spacing:2px;text-shadow:2px 2px 0 var(--purple-dark);margin-bottom:14px;text-align:center}
   .rules-box p{color:var(--purple-light);font-size:.86rem;line-height:1.65;margin-bottom:10px;font-weight:600}
@@ -86,13 +98,14 @@
   .rules-diff-table td{font-size:.8rem;padding:5px 6px;font-weight:600;color:var(--purple-light);vertical-align:top}
   .rules-diff-table td:first-child{color:var(--yellow);font-family:'Russo One',sans-serif;font-size:.75rem;white-space:nowrap;padding-right:10px}
   .rules-close-wrap{text-align:center;margin-top:16px}
+  /* confetti */
   .confetti-wrap{position:fixed;inset:0;pointer-events:none;z-index:99}
   .cp{position:absolute;border-radius:2px;animation:cp-fall linear forwards}
   @keyframes cp-fall{0%{transform:translateY(-30px) rotate(0deg);opacity:1}100%{transform:translateY(105vh) rotate(800deg);opacity:0}}
+  /* impressum */
   .impressum{position:relative;z-index:1;width:100%;max-width:448px;margin-top:20px;padding:14px 20px 28px;text-align:center;border-top:1px solid rgba(123,47,190,.25)}
   .impressum p{font-family:'Exo 2',sans-serif;font-size:.67rem;font-weight:600;color:rgba(192,132,252,.42);letter-spacing:.5px;line-height:1.75}
   .impressum p strong{color:rgba(192,132,252,.62);font-weight:800;letter-spacing:1px}
-  .impressum .heart{color:rgba(192,132,252,.42)}
   @media(max-width:480px){.btn{padding:7px 11px;font-size:.78rem}.numpad-btn{padding:9px 0;font-size:1.1rem}}
 </style>
 </head>
@@ -101,38 +114,33 @@
 
 <div class="header">
   <div class="logo-wrap"><span class="bolt">⚡</span><h1>THUNDERMANS</h1><span class="bolt">⚡</span></div>
-  <div class="subtitle">Super-Sudoku Challenge</div>
+  <div class="subtitle" id="subtitle">Super-Sudoku Challenge</div>
 </div>
 
 <div class="controls">
   <div class="difficulty-wrap">
-    <label>Level:</label>
-    <select id="difficultySelect">
-      <option value="anfaenger">⭐ Anfänger</option>
-      <option value="easy">⚡ Leicht</option>
-      <option value="medium" selected>⚡⚡ Mittel</option>
-      <option value="hard">⚡⚡⚡ Schwer</option>
-      <option value="einstein">💀 Einstein</option>
-    </select>
+    <label id="labelLevel">Level:</label>
+    <select id="difficultySelect"></select>
   </div>
-  <button class="btn btn-new"   onclick="newGame()">🎮 Neu</button>
-  <button class="btn btn-hint"  onclick="giveHint()">💡 Tipp</button>
-  <button class="btn btn-clear" onclick="clearSelected()">✕ Löschen</button>
-  <button class="btn btn-rules" onclick="openRules()">📋 Spielregeln</button>
+  <button class="btn btn-new"   onclick="newGame()"    id="btnNew">🎮 Neu</button>
+  <button class="btn btn-hint"  onclick="giveHint()"   id="btnHint">💡 Tipp</button>
+  <button class="btn btn-clear" onclick="clearSelected()" id="btnClear">✕ Löschen</button>
+  <button class="btn btn-rules" onclick="openRules()"  id="btnRules">📋 Spielregeln</button>
+  <button class="btn btn-lang"  onclick="cycleLang()"  id="btnLang">DE</button>
 </div>
 
 <div id="modeBadge" class="mode-badge"></div>
 
 <div class="stats">
-  <div class="stat-box"><div class="stat-label">Zeit</div><div class="stat-value" id="timerDisplay">0:00</div></div>
-  <div class="stat-box" id="errorsBox"><div class="stat-label">Fehler</div><div class="stat-value" id="errorsDisplay">0</div></div>
-  <div class="stat-box"><div class="stat-label">Tipps</div><div class="stat-value" id="hintsDisplay">3</div></div>
+  <div class="stat-box"><div class="stat-label" id="labelTime">Zeit</div><div class="stat-value" id="timerDisplay">0:00</div></div>
+  <div class="stat-box" id="errorsBox"><div class="stat-label" id="labelErrors">Fehler</div><div class="stat-value" id="errorsDisplay">0</div></div>
+  <div class="stat-box"><div class="stat-label" id="labelHints">Tipps</div><div class="stat-value" id="hintsDisplay">3</div></div>
 </div>
 
 <div class="legend">
-  <div class="legend-item show" id="legGiven"><div class="legend-dot ld-given"></div>Vorgabe</div>
-  <div class="legend-item" id="legCorrect"><div class="legend-dot ld-correct"></div>Richtig</div>
-  <div class="legend-item" id="legWrong"><div class="legend-dot ld-wrong"></div>Falsch</div>
+  <div class="legend-item show" id="legGiven"><div class="legend-dot ld-given"></div><span id="legGivenTxt">Vorgabe</span></div>
+  <div class="legend-item" id="legCorrect"><div class="legend-dot ld-correct"></div><span id="legCorrectTxt">Richtig</span></div>
+  <div class="legend-item" id="legWrong"><div class="legend-dot ld-wrong"></div><span id="legWrongTxt">Falsch</span></div>
 </div>
 
 <div class="game-area">
@@ -146,38 +154,32 @@
 <div class="impressum">
   <p>
     <strong>SUDOKU · Thundermans Special Edition</strong><br>
-    version v01.00 · March 2026<br>
-    made by <strong>MAKO+CLAUDE=VL</strong> <span class="heart">♥</span> for all sudoku fans, especially my daughter Maruška
+    version v02r01 · March 2026<br>
+    made by <strong>MAKO+CLAUDE=VL</strong> ♥ for all sudoku fans, especially my daughter Maruška
   </p>
 </div>
 
 <!-- MESSAGE OVERLAY -->
 <div class="overlay" id="msgOverlay">
   <div class="msg-box">
-    <div class="msg-icon" id="msgIcon">⚡</div>
+    <div class="msg-icon"  id="msgIcon">⚡</div>
     <div class="msg-title" id="msgTitle">SUPER!</div>
-    <div class="msg-sub" id="msgSub">Du hast gewonnen!</div>
-    <button class="btn btn-new" onclick="newGame();closeMsg()">🎮 Nochmal</button>
+    <div class="msg-sub"   id="msgSub"></div>
+    <button class="btn btn-new" onclick="newGame();closeMsg()" id="btnPlayAgain">🎮 Nochmal</button>
   </div>
 </div>
 
 <!-- RULES OVERLAY -->
 <div class="overlay" id="rulesOverlay">
   <div class="rules-box">
-    <h2>⚡ SPIELREGELN</h2>
-    <p>Fülle das <span>9×9-Gitter</span> so aus, dass jede Zeile, jede Spalte und jedes <span>3×3-Quadrat</span> die Zahlen <span>1 bis 9</span> genau einmal enthält.</p>
-    <p>Tippe auf ein leeres Feld und dann auf eine Zahl — oder benutze die Tastatur. Mit den <span>Pfeiltasten</span> navigierst du zwischen den Feldern.</p>
+    <h2 id="rulesTitle">⚡ SPIELREGELN</h2>
+    <p id="rulesP1"></p>
+    <p id="rulesP2"></p>
     <hr class="rules-divider">
-    <table class="rules-diff-table">
-      <tr><td>⭐ Anfänger</td><td>Wenige leere Felder · Richtig = <span style="color:var(--green)">grün</span>, Falsch = <span style="color:var(--red-light)">rot</span> · Keine Fehlerwertung</td></tr>
-      <tr><td>⚡ Leicht</td><td>Sofortiges Farb-Feedback · max. 5 Fehler erlaubt</td></tr>
-      <tr><td>⚡⚡ Mittel</td><td>Kein Farb-Feedback · Fehlerzähler sichtbar · max. 5 Fehler</td></tr>
-      <tr><td>⚡⚡⚡ Schwer</td><td>Kein Feedback · Fehlerzähler versteckt · max. 5 Fehler</td></tr>
-      <tr><td>💀 Einstein</td><td>Maximale Schwierigkeit · alles versteckt · Fehler erst bei Game Over sichtbar · max. 3 Fehler</td></tr>
-    </table>
-    <p>💡 Du hast <span>3 Tipps</span> pro Spiel — nutze sie weise, Superheld!</p>
+    <table class="rules-diff-table" id="rulesDiffTable"></table>
+    <p id="rulesP3"></p>
     <div class="rules-close-wrap">
-      <button class="btn btn-new" onclick="closeRules()">Los geht's! ⚡</button>
+      <button class="btn btn-new" onclick="closeRules()" id="btnCloseRules">Los geht's! ⚡</button>
     </div>
   </div>
 </div>
@@ -185,27 +187,235 @@
 <div class="confetti-wrap" id="confettiWrap"></div>
 
 <script>
-const DIFF_CONFIG={
-  anfaenger:{removals:25,feedback:'full',   noErrors:true, maxErr:999,label:'⭐ ANFÄNGER-MODUS — keine Fehlerwertung!',badgeClass:'anfaenger'},
-  easy:     {removals:33,feedback:'full',   noErrors:false,maxErr:5,  label:null},
-  medium:   {removals:45,feedback:'counter',noErrors:false,maxErr:5,  label:null},
-  hard:     {removals:53,feedback:'hidden', noErrors:false,maxErr:5,  label:null},
-  einstein: {removals:60,feedback:'hidden', noErrors:false,maxErr:3,  label:'💀 EINSTEIN — viel Erfolg!',badgeClass:'einstein'},
+// ═══════════════════════════════════════════════════
+//  TRANSLATIONS
+// ═══════════════════════════════════════════════════
+const T = {
+  de: {
+    subtitle:      'Super-Sudoku Challenge',
+    labelLevel:    'Level:',
+    btnNew:        '🎮 Neu',
+    btnHint:       '💡 Tipp',
+    btnClear:      '✕ Löschen',
+    btnRules:      '📋 Spielregeln',
+    labelTime:     'Zeit',
+    labelErrors:   'Fehler',
+    labelHints:    'Tipps',
+    legGiven:      'Vorgabe',
+    legCorrect:    'Richtig',
+    legWrong:      'Falsch',
+    difficulties: [
+      {v:'anfaenger', t:'⭐ Anfänger'},
+      {v:'easy',      t:'⚡ Leicht'},
+      {v:'medium',    t:'⚡⚡ Mittel'},
+      {v:'hard',      t:'⚡⚡⚡ Schwer'},
+      {v:'einstein',  t:'💀 Einstein'},
+    ],
+    badgeAnfaenger: '⭐ ANFÄNGER-MODUS — keine Fehlerwertung!',
+    badgeEinstein:  '💀 EINSTEIN — viel Erfolg!',
+    winTitle:  'SUPER!',
+    winSub:    t => `Gelöst in ${t} — gut gemacht!`,
+    loseTitle: 'GAME OVER',
+    loseSub:   'Zu viele Fehler! Versuch es nochmal.',
+    btnPlayAgain: '🎮 Nochmal',
+    rulesTitle: '⚡ SPIELREGELN',
+    rulesP1: 'Fülle das <span>9×9-Gitter</span> so aus, dass jede Zeile, jede Spalte und jedes <span>3×3-Quadrat</span> die Zahlen <span>1 bis 9</span> genau einmal enthält.',
+    rulesP2: 'Tippe auf ein leeres Feld und dann auf eine Zahl — oder benutze die Tastatur. Mit den <span>Pfeiltasten</span> navigierst du zwischen den Feldern.',
+    rulesP3: '💡 Du hast <span>3 Tipps</span> pro Spiel — nutze sie weise, Superheld!',
+    btnCloseRules: "Los geht's! ⚡",
+    rulesDiff: [
+      ['⭐ Anfänger',    'Wenige leere Felder · Richtig = <span style="color:var(--green)">grün</span>, Falsch = <span style="color:var(--red-light)">rot</span> · Keine Fehlerwertung'],
+      ['⚡ Leicht',      'Sofortiges Farb-Feedback · max. 5 Fehler erlaubt'],
+      ['⚡⚡ Mittel',    'Kein Farb-Feedback · Fehlerzähler sichtbar · max. 5 Fehler'],
+      ['⚡⚡⚡ Schwer',  'Kein Feedback · Fehlerzähler versteckt · max. 5 Fehler'],
+      ['💀 Einstein',   'Maximale Schwierigkeit · alles versteckt · Fehler erst bei Game Over sichtbar · max. 3 Fehler'],
+    ],
+  },
+  en: {
+    subtitle:      'Super-Sudoku Challenge',
+    labelLevel:    'level:',
+    btnNew:        '🎮 new',
+    btnHint:       '💡 hint',
+    btnClear:      '✕ erase',
+    btnRules:      '📋 rules',
+    labelTime:     'time',
+    labelErrors:   'errors',
+    labelHints:    'hints',
+    legGiven:      'given',
+    legCorrect:    'correct',
+    legWrong:      'wrong',
+    difficulties: [
+      {v:'anfaenger', t:'⭐ beginner'},
+      {v:'easy',      t:'⚡ easy'},
+      {v:'medium',    t:'⚡⚡ medium'},
+      {v:'hard',      t:'⚡⚡⚡ hard'},
+      {v:'einstein',  t:'💀 Einstein'},
+    ],
+    badgeAnfaenger: '⭐ BEGINNER MODE — no error penalty!',
+    badgeEinstein:  '💀 EINSTEIN — good luck!',
+    winTitle:  'SUPER!',
+    winSub:    t => `Solved in ${t} — well done!`,
+    loseTitle: 'GAME OVER',
+    loseSub:   'Too many errors! Try again.',
+    btnPlayAgain: '🎮 play again',
+    rulesTitle: '⚡ RULES',
+    rulesP1: 'Fill the <span>9×9 grid</span> so that every row, every column and every <span>3×3 square</span> contains the numbers <span>1 to 9</span> exactly once.',
+    rulesP2: 'Tap an empty cell and then a number — or use the keyboard. Use the <span>arrow keys</span> to navigate between cells.',
+    rulesP3: '💡 You have <span>3 hints</span> per game — use them wisely, superhero!',
+    btnCloseRules: "Let's go! ⚡",
+    rulesDiff: [
+      ['⭐ beginner',   'Few empty cells · correct = <span style="color:var(--green)">green</span>, wrong = <span style="color:var(--red-light)">red</span> · no error penalty'],
+      ['⚡ easy',       'Instant color feedback · max. 5 errors allowed'],
+      ['⚡⚡ medium',   'No color feedback · error counter visible · max. 5 errors'],
+      ['⚡⚡⚡ hard',   'No feedback · error counter hidden · max. 5 errors'],
+      ['💀 Einstein',  'Maximum difficulty · everything hidden · errors revealed only at game over · max. 3 errors'],
+    ],
+  },
+  cz: {
+    subtitle:      'Super-Sudoku Challenge',
+    labelLevel:    'úroveň:',
+    btnNew:        '🎮 nová hra',
+    btnHint:       '💡 nápověda',
+    btnClear:      '✕ smazat',
+    btnRules:      '📋 pravidla',
+    labelTime:     'čas',
+    labelErrors:   'chyby',
+    labelHints:    'nápovědy',
+    legGiven:      'zadáno',
+    legCorrect:    'správně',
+    legWrong:      'špatně',
+    difficulties: [
+      {v:'anfaenger', t:'⭐ začátečník'},
+      {v:'easy',      t:'⚡ lehká'},
+      {v:'medium',    t:'⚡⚡ střední'},
+      {v:'hard',      t:'⚡⚡⚡ těžká'},
+      {v:'einstein',  t:'💀 Einstein'},
+    ],
+    badgeAnfaenger: '⭐ ZAČÁTEČNÍK — chyby se nepočítají!',
+    badgeEinstein:  '💀 EINSTEIN — hodně štěstí!',
+    winTitle:  'SUPER!',
+    winSub:    t => `Vyřešeno za ${t} — výborně!`,
+    loseTitle: 'GAME OVER',
+    loseSub:   'Příliš mnoho chyb! Zkus to znovu.',
+    btnPlayAgain: '🎮 znovu',
+    rulesTitle: '⚡ PRAVIDLA',
+    rulesP1: 'Vyplň mřížku <span>9×9</span> tak, aby každý řádek, každý sloupec a každý čtverec <span>3×3</span> obsahoval čísla <span>1 až 9</span> právě jednou.',
+    rulesP2: 'Klikni na prázdné pole a pak na číslo — nebo použij klávesnici. <span>Šipkami</span> se pohybuješ mezi políčky.',
+    rulesP3: '💡 Máš <span>3 nápovědy</span> na hru — používej je moudře, superhrdino!',
+    btnCloseRules: 'Hrát! ⚡',
+    rulesDiff: [
+      ['⭐ začátečník', 'Málo prázdných polí · správně = <span style="color:var(--green)">zeleně</span>, špatně = <span style="color:var(--red-light)">červeně</span> · chyby se nepočítají'],
+      ['⚡ lehká',      'Okamžitá barevná zpětná vazba · max. 5 chyb'],
+      ['⚡⚡ střední',  'Žádné barevné označení · počítadlo chyb viditelné · max. 5 chyb'],
+      ['⚡⚡⚡ těžká',  'Žádná zpětná vazba · počítadlo skryté · max. 5 chyb'],
+      ['💀 Einstein',  'Maximální obtížnost · vše skryté · chyby viditelné až po game over · max. 3 chyby'],
+    ],
+  },
 };
 
+const LANGS = ['de','en','cz'];
+let langIdx = 0;
+let lang = 'de';
+
+function cycleLang() {
+  langIdx = (langIdx + 1) % LANGS.length;
+  lang = LANGS[langIdx];
+  applyLang();
+}
+
+function applyLang() {
+  const l = T[lang];
+  const btnLang = document.getElementById('btnLang');
+  btnLang.textContent = lang.toUpperCase();
+
+  document.getElementById('subtitle').textContent    = l.subtitle;
+  document.getElementById('labelLevel').textContent  = l.labelLevel;
+  document.getElementById('btnNew').textContent      = l.btnNew;
+  document.getElementById('btnHint').textContent     = l.btnHint;
+  document.getElementById('btnClear').textContent    = l.btnClear;
+  document.getElementById('btnRules').textContent    = l.btnRules;
+  document.getElementById('labelTime').textContent   = l.labelTime;
+  document.getElementById('labelErrors').textContent = l.labelErrors;
+  document.getElementById('labelHints').textContent  = l.labelHints;
+  document.getElementById('legGivenTxt').textContent   = l.legGiven;
+  document.getElementById('legCorrectTxt').textContent = l.legCorrect;
+  document.getElementById('legWrongTxt').textContent   = l.legWrong;
+  document.getElementById('btnPlayAgain').textContent  = l.btnPlayAgain;
+
+  // rebuild difficulty select keeping current selection
+  const sel = document.getElementById('difficultySelect');
+  const cur = sel.value || 'medium';
+  sel.innerHTML = '';
+  l.difficulties.forEach(d => {
+    const o = document.createElement('option');
+    o.value = d.v; o.textContent = d.t;
+    if (d.v === cur) o.selected = true;
+    sel.appendChild(o);
+  });
+
+  // rules popup
+  document.getElementById('rulesTitle').textContent    = l.rulesTitle;
+  document.getElementById('rulesP1').innerHTML          = l.rulesP1;
+  document.getElementById('rulesP2').innerHTML          = l.rulesP2;
+  document.getElementById('rulesP3').innerHTML          = l.rulesP3;
+  document.getElementById('btnCloseRules').textContent  = l.btnCloseRules;
+  const tbl = document.getElementById('rulesDiffTable');
+  tbl.innerHTML = l.rulesDiff.map(([d,t]) =>
+    `<tr><td>${d}</td><td>${t}</td></tr>`).join('');
+
+  // update mode badge if visible
+  updateBadge();
+}
+
+// ═══════════════════════════════════════════════════
+//  DIFFICULTY CONFIG
+// ═══════════════════════════════════════════════════
+const DIFF_CONFIG = {
+  anfaenger: {removals:25, feedback:'full',    noErrors:true,  maxErr:999, badge:'anfaenger'},
+  easy:      {removals:33, feedback:'full',    noErrors:false, maxErr:5,   badge:null},
+  medium:    {removals:45, feedback:'counter', noErrors:false, maxErr:5,   badge:null},
+  hard:      {removals:53, feedback:'hidden',  noErrors:false, maxErr:5,   badge:null},
+  einstein:  {removals:60, feedback:'hidden',  noErrors:false, maxErr:3,   badge:'einstein'},
+};
+
+function updateBadge() {
+  const diff = document.getElementById('difficultySelect').value || 'medium';
+  const c = DIFF_CONFIG[diff];
+  const badge = document.getElementById('modeBadge');
+  const l = T[lang];
+  if (c.badge === 'anfaenger') {
+    badge.textContent = l.badgeAnfaenger;
+    badge.className = 'mode-badge show anfaenger';
+  } else if (c.badge === 'einstein') {
+    badge.textContent = l.badgeEinstein;
+    badge.className = 'mode-badge show einstein';
+  } else {
+    badge.className = 'mode-badge';
+  }
+}
+
+// ═══════════════════════════════════════════════════
+//  SUDOKU ENGINE
+// ═══════════════════════════════════════════════════
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function canPlace(b,row,col,n){for(let i=0;i<9;i++){if(b[row][i]===n||b[i][col]===n)return false}const br=Math.floor(row/3)*3,bc=Math.floor(col/3)*3;for(let r=br;r<br+3;r++)for(let c=bc;c<bc+3;c++)if(b[r][c]===n)return false;return true}
 function fillBoard(b){for(let r=0;r<9;r++)for(let c=0;c<9;c++){if(b[r][c]!==0)continue;for(const n of shuffle([1,2,3,4,5,6,7,8,9])){if(canPlace(b,r,c,n)){b[r][c]=n;if(fillBoard(b))return true;b[r][c]=0}}return false}return true}
 function generateSolution(){const b=Array.from({length:9},()=>Array(9).fill(0));fillBoard(b);return b}
 function createPuzzle(sol,removals){const puz=sol.map(r=>[...r]);shuffle([...Array(81).keys()]).slice(0,removals).forEach(idx=>{puz[Math.floor(idx/9)][idx%9]=0});return puz}
 
+// ═══════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════
 let solution=[],userBoard=[],given=[],cellState=[];
 let selR=-1,selC=-1,errors=0,hintsLeft=3,timerSecs=0,timerID=null,gameOver=false;
 let cfg=DIFF_CONFIG.medium;
 
+// ═══════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════
 function newGame(){
   closeMsg();
-  const diff=document.getElementById('difficultySelect').value;
+  const diff=document.getElementById('difficultySelect').value||'medium';
   cfg=DIFF_CONFIG[diff];
   solution=generateSolution();
   const puz=createPuzzle(solution,cfg.removals);
@@ -213,9 +423,7 @@ function newGame(){
   given=puz.map(r=>r.map(v=>v!==0));
   cellState=Array.from({length:9},()=>Array(9).fill('empty'));
   selR=-1;selC=-1;errors=0;hintsLeft=3;gameOver=false;
-  const badge=document.getElementById('modeBadge');
-  if(cfg.label){badge.textContent=cfg.label;badge.className='mode-badge show '+(cfg.badgeClass||'')}
-  else{badge.className='mode-badge'}
+  updateBadge();
   document.getElementById('errorsBox').classList.toggle('hidden',cfg.feedback==='hidden');
   document.getElementById('errorsDisplay').textContent='0';
   document.getElementById('hintsDisplay').textContent='3';
@@ -226,6 +434,9 @@ function newGame(){
   renderBoard();renderNumpad();resetTimer();
 }
 
+// ═══════════════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════════════
 function bCls(r,c){const cls=[];if(c===2||c===5)cls.push('box-right');if(c===8)cls.push('no-right');if(r===2||r===5)cls.push('box-bottom');if(r===8)cls.push('no-bottom');return cls}
 
 function renderBoard(){
@@ -261,6 +472,9 @@ function refreshCellEl(el,r,c){
 function refreshCell(r,c){const el=getCell(r,c);if(el)refreshCellEl(el,r,c)}
 function refreshAllCells(){for(let r=0;r<9;r++)for(let c=0;c<9;c++)if(!given[r][c])refreshCell(r,c)}
 
+// ═══════════════════════════════════════════════════
+//  HIGHLIGHTS
+// ═══════════════════════════════════════════════════
 function applyHighlights(){
   document.querySelectorAll('.cell').forEach(cell=>{
     cell.classList.remove('selected','highlight','same-given','same-correct','same-wrong','same-neutral');
@@ -279,6 +493,9 @@ function applyHighlights(){
   });
 }
 
+// ═══════════════════════════════════════════════════
+//  INTERACTION
+// ═══════════════════════════════════════════════════
 function onCellClick(r,c){if(gameOver)return;selR=r;selC=c;applyHighlights()}
 
 function placeNumber(num){
@@ -290,14 +507,14 @@ function placeNumber(num){
   if(num===solution[r][c]){
     cellState[r][c]='correct';refreshCell(r,c);
     if(cfg.feedback==='full'){const el=getCell(r,c);el.classList.add('flash-correct');setTimeout(()=>el.classList.remove('flash-correct'),380)}
-    if(isComplete()){gameOver=true;stopTimer();setTimeout(()=>{launchConfetti();showMsg('🏆','SUPER!','Perfekt! Zeit: '+formatTime(timerSecs))},380)}
+    if(isComplete()){gameOver=true;stopTimer();setTimeout(()=>{launchConfetti();showMsg('🏆',T[lang].winTitle,T[lang].winSub(formatTime(timerSecs)))},380)}
   }else{
     cellState[r][c]='wrong';refreshCell(r,c);
     if(cfg.feedback==='full'){const el=getCell(r,c);el.classList.add('flash-wrong');setTimeout(()=>el.classList.remove('flash-wrong'),380)}
     if(!cfg.noErrors){
       errors++;
       if(cfg.feedback!=='hidden')document.getElementById('errorsDisplay').textContent=errors;
-      if(errors>=cfg.maxErr){gameOver=true;stopTimer();refreshAllCells();setTimeout(()=>showMsg('💀','GAME OVER','Zu viele Fehler! Versuch es nochmal.'),450)}
+      if(errors>=cfg.maxErr){gameOver=true;stopTimer();refreshAllCells();setTimeout(()=>showMsg('💀',T[lang].loseTitle,T[lang].loseSub),450)}
     }
   }
   applyHighlights();
@@ -313,7 +530,7 @@ function giveHint(){
   const[r,c]=empties[Math.floor(Math.random()*empties.length)];
   selR=r;selC=c;userBoard[r][c]=solution[r][c];cellState[r][c]='correct';given[r][c]=true;
   refreshCell(r,c);hintsLeft--;document.getElementById('hintsDisplay').textContent=hintsLeft;applyHighlights();
-  if(isComplete()){gameOver=true;stopTimer();setTimeout(()=>{launchConfetti();showMsg('🏆','SUPER!','Perfekt! Zeit: '+formatTime(timerSecs))},380)}
+  if(isComplete()){gameOver=true;stopTimer();setTimeout(()=>{launchConfetti();showMsg('🏆',T[lang].winTitle,T[lang].winSub(formatTime(timerSecs)))},380)}
 }
 
 function isComplete(){
@@ -324,10 +541,16 @@ function isComplete(){
   return true;
 }
 
+// ═══════════════════════════════════════════════════
+//  TIMER
+// ═══════════════════════════════════════════════════
 function resetTimer(){stopTimer();timerSecs=0;document.getElementById('timerDisplay').textContent='0:00';timerID=setInterval(()=>{timerSecs++;document.getElementById('timerDisplay').textContent=formatTime(timerSecs)},1000)}
 function stopTimer(){clearInterval(timerID);timerID=null}
 function formatTime(s){return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
 
+// ═══════════════════════════════════════════════════
+//  OVERLAYS
+// ═══════════════════════════════════════════════════
 function showMsg(icon,title,sub){document.getElementById('msgIcon').textContent=icon;document.getElementById('msgTitle').textContent=title;document.getElementById('msgSub').textContent=sub;document.getElementById('msgOverlay').classList.add('show')}
 function closeMsg(){document.getElementById('msgOverlay').classList.remove('show')}
 function openRules(){document.getElementById('rulesOverlay').classList.add('show')}
@@ -335,6 +558,9 @@ function closeRules(){document.getElementById('rulesOverlay').classList.remove('
 document.getElementById('msgOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeMsg()});
 document.getElementById('rulesOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeRules()});
 
+// ═══════════════════════════════════════════════════
+//  CONFETTI
+// ═══════════════════════════════════════════════════
 function launchConfetti(){
   const wrap=document.getElementById('confettiWrap');wrap.innerHTML='';
   const colors=['#FACC15','#7B2FBE','#E8152A','#22C55E','#C084FC','#FEF08A','#FF6B7A','#fff'];
@@ -342,6 +568,9 @@ function launchConfetti(){
   setTimeout(()=>wrap.innerHTML='',5000);
 }
 
+// ═══════════════════════════════════════════════════
+//  KEYBOARD
+// ═══════════════════════════════════════════════════
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){closeMsg();closeRules();return}
   if(gameOver)return;
@@ -351,6 +580,10 @@ document.addEventListener('keydown',e=>{
   if(d[e.key]){e.preventDefault();selR=Math.max(0,Math.min(8,(selR<0?4:selR)+d[e.key][0]));selC=Math.max(0,Math.min(8,(selC<0?4:selC)+d[e.key][1]));applyHighlights()}
 });
 
+// ═══════════════════════════════════════════════════
+//  START
+// ═══════════════════════════════════════════════════
+applyLang();
 newGame();
 </script>
 </body>
